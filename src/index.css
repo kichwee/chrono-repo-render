@@ -105,13 +105,48 @@ All colors MUST be HSL for proper theming.
 }
 
 @layer components {
-  /* Hero Button Variants */
+/* Hero Button Variants */
   .btn-hero {
     @apply bg-gradient-to-r from-primary to-accent text-primary-foreground px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-glow;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .btn-hero:hover::before {
+    left: 100%;
   }
 
   .btn-outline-hero {
     @apply border-2 border-primary text-primary bg-transparent px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:scale-105;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-outline-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: hsl(var(--primary));
+    transition: left 0.3s;
+    z-index: -1;
+  }
+
+  .btn-outline-hero:hover::before {
+    left: 0;
   }
 
   /* Section Containers */
@@ -132,19 +167,56 @@ All colors MUST be HSL for proper theming.
   /* Card Styles */
   .card-futuristic {
     @apply bg-gradient-to-br from-card to-muted border border-border/50 backdrop-blur-sm rounded-2xl p-6 transition-all duration-300 hover:border-primary/50 hover:shadow-primary;
+    position: relative;
+    overflow: hidden;
   }
 
-  /* Navigation Styles */
+  .card-futuristic::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(var(--primary)), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+
+  .card-futuristic:hover::before {
+    transform: translateX(100%);
+  }
+
+  /* Navigation Styles with Enhanced Hover */
   .nav-link {
-    @apply text-muted-foreground hover:text-primary transition-colors duration-300 relative;
+    @apply text-muted-foreground hover:text-primary transition-all duration-300 relative;
   }
 
   .nav-link::after {
-    @apply content-[''] absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300;
+    @apply content-[''] absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300;
   }
 
   .nav-link:hover::after {
     @apply w-full;
+  }
+
+  .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: hsl(var(--primary) / 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+    z-index: -1;
+  }
+
+  .nav-link:hover::before {
+    width: 100px;
+    height: 100px;
   }
 
   /* Scrollbar Styling */

@@ -59,14 +59,14 @@ const AboutSection = () => {
           <div className="animate-slide-up">
             <h3 className="text-2xl font-bold mb-6 gradient-text">My Journey</h3>
             <p className="text-muted-foreground mb-6 leading-relaxed">
-              With a background in both software development and data science, I bridge the gap 
-              between technical implementation and data-driven insights. I've worked on projects 
-              ranging from AI-powered web applications to large-scale data processing systems.
+              As Mark Maati, I bring together software development and data science expertise to create 
+              intelligent solutions. I've worked on diverse projects from AI-powered applications 
+              to large-scale data processing systems that drive business value.
             </p>
             <p className="text-muted-foreground mb-8 leading-relaxed">
-              I believe in continuous learning and staying at the forefront of technology trends. 
-              When I'm not coding, you'll find me exploring new frameworks, contributing to open 
-              source projects, or mentoring aspiring developers.
+              I thrive on continuous learning and staying ahead of technology trends. When I'm not 
+              coding, you'll find me exploring new frameworks, contributing to open source projects, 
+              or mentoring fellow developers in the community.
             </p>
 
             {/* Skills */}

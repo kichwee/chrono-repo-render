@@ -1,7 +1,16 @@
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import TypewriterEffect from './TypewriterEffect';
 
 const HeroSection = () => {
+  const roles = [
+    "Software Developer",
+    "Data Scientist", 
+    "Full-Stack Engineer",
+    "ML Engineer",
+    "Problem Solver"
+  ];
+
   return (
     <section id="hero" className="section-container bg-gradient-hero relative overflow-hidden">
       {/* Animated Background Elements */}
@@ -13,14 +22,14 @@ const HeroSection = () => {
       <div className="relative z-10 text-center max-w-4xl mx-auto">
         <div className="animate-fade-in">
           <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
-            <span className="gradient-text">Gregory</span>
+            <span className="gradient-text">Mark</span>
             <br />
-            <span className="text-foreground">Kipngeno</span>
+            <span className="text-foreground">Maati</span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-muted-foreground mb-4">
-            Software Developer & Data Scientist
-          </p>
+          <div className="text-xl md:text-2xl text-muted-foreground mb-4 h-8">
+            <TypewriterEffect words={roles} className="gradient-text font-semibold" />
+          </div>
           
           <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
             Passionate about building intelligent, scalable systems that solve real-world problems through innovative technology.
@@ -39,7 +48,7 @@ const HeroSection = () => {
           {/* Social Links */}
           <div className="flex justify-center space-x-8">
             <a 
-              href="https://github.com" 
+              href="https://github.com/kichwee" 
               className="text-muted-foreground hover:text-primary transition-colors p-3 hover:bg-primary/10 rounded-full"
               target="_blank" 
               rel="noopener noreferrer"
@@ -47,7 +56,7 @@ const HeroSection = () => {
               <Github size={24} />
             </a>
             <a 
-              href="https://linkedin.com" 
+              href="https://linkedin.com/in/markmaati" 
               className="text-muted-foreground hover:text-secondary transition-colors p-3 hover:bg-secondary/10 rounded-full"
               target="_blank" 
               rel="noopener noreferrer"
@@ -55,7 +64,7 @@ const HeroSection = () => {
               <Linkedin size={24} />
             </a>
             <a 
-              href="mailto:contact@example.com" 
+              href="mailto:maatimark4@gmail.com" 
               className="text-muted-foreground hover:text-accent transition-colors p-3 hover:bg-accent/10 rounded-full"
             >
               <Mail size={24} />

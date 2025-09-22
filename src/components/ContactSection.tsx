@@ -42,19 +42,19 @@ const ContactSection = () => {
     {
       icon: <Mail className="h-6 w-6 text-primary" />,
       title: "Email",
-      content: "gregory.kipngeno@example.com",
-      link: "mailto:gregory.kipngeno@example.com"
+      content: "maatimark4@gmail.com",
+      link: "mailto:maatimark4@gmail.com"
     },
     {
       icon: <Phone className="h-6 w-6 text-secondary" />,
       title: "Phone",
-      content: "+1 (555) 123-4567",
-      link: "tel:+15551234567"
+      content: "0112909210",
+      link: "tel:0112909210"
     },
     {
       icon: <MapPin className="h-6 w-6 text-accent" />,
       title: "Location",
-      content: "San Francisco, CA",
+      content: "Nairobi, Kenya",
       link: null
     }
   ];
@@ -63,19 +63,19 @@ const ContactSection = () => {
     {
       icon: <Github className="h-6 w-6" />,
       name: "GitHub",
-      url: "https://github.com/gregorykipngeno",
+      url: "https://github.com/kichwee",
       color: "hover:text-foreground"
     },
     {
       icon: <Linkedin className="h-6 w-6" />,
       name: "LinkedIn", 
-      url: "https://linkedin.com/in/gregorykipngeno",
+      url: "https://linkedin.com/in/markmaati",
       color: "hover:text-blue-400"
     },
     {
       icon: <Twitter className="h-6 w-6" />,
       name: "Twitter",
-      url: "https://twitter.com/gregorykipngeno",
+      url: "https://twitter.com/markmaati",
       color: "hover:text-sky-400"
     }
   ];
@@ -142,12 +142,12 @@ const ContactSection = () => {
 
             {/* Additional Info Card */}
             <Card className="card-futuristic mt-8">
-              <h4 className="font-semibold mb-3 gradient-text">Available for Work</h4>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                I'm currently available for freelance projects and full-time opportunities. 
-                Whether you need a full-stack developer, data scientist, or technical consultant, 
-                I'd love to hear about your project.
-              </p>
+            <h4 className="font-semibold mb-3 gradient-text">Available for Work</h4>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              I'm currently available for freelance projects and full-time opportunities. 
+              Whether you need a full-stack developer, data scientist, or technical consultant, 
+              I'd love to hear about your project.
+            </p>
             </Card>
           </div>
 

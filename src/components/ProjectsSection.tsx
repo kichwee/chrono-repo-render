@@ -28,7 +28,7 @@ const ProjectsSection = () => {
       id: 1,
       name: "ai-powered-dashboard",
       description: "A comprehensive dashboard with AI-driven analytics and real-time data visualization",
-      html_url: "https://github.com/user/ai-powered-dashboard",
+      html_url: "https://github.com/kichwee/ai-powered-dashboard",
       homepage: "https://dashboard-demo.com",
       stargazers_count: 124,
       forks_count: 23,
@@ -40,7 +40,7 @@ const ProjectsSection = () => {
       id: 2,
       name: "ml-data-pipeline",
       description: "Scalable machine learning pipeline for processing large datasets with automated model training",
-      html_url: "https://github.com/user/ml-data-pipeline",
+      html_url: "https://github.com/kichwee/ml-data-pipeline",
       homepage: "",
       stargazers_count: 89,
       forks_count: 15,
@@ -52,7 +52,7 @@ const ProjectsSection = () => {
       id: 3,
       name: "modern-ecommerce-app",
       description: "Full-stack e-commerce application with payment integration and admin dashboard",
-      html_url: "https://github.com/user/modern-ecommerce-app",
+      html_url: "https://github.com/kichwee/modern-ecommerce-app",
       homepage: "https://ecommerce-demo.com",
       stargazers_count: 67,
       forks_count: 12,
@@ -64,7 +64,7 @@ const ProjectsSection = () => {
       id: 4,
       name: "blockchain-voting-system",
       description: "Decentralized voting system built on blockchain with smart contracts",
-      html_url: "https://github.com/user/blockchain-voting-system",
+      html_url: "https://github.com/kichwee/blockchain-voting-system",
       homepage: "",
       stargazers_count: 156,
       forks_count: 34,
@@ -76,7 +76,7 @@ const ProjectsSection = () => {
       id: 5,
       name: "react-component-library",
       description: "Modern React component library with TypeScript and Storybook documentation",
-      html_url: "https://github.com/user/react-component-library",
+      html_url: "https://github.com/kichwee/react-component-library",
       homepage: "https://components-demo.com",
       stargazers_count: 203,
       forks_count: 41,
@@ -88,7 +88,7 @@ const ProjectsSection = () => {
       id: 6,
       name: "api-microservices",
       description: "Microservices architecture with Docker, Kubernetes, and message queuing",
-      html_url: "https://github.com/user/api-microservices",
+      html_url: "https://github.com/kichwee/api-microservices",
       homepage: "",
       stargazers_count: 78,
       forks_count: 19,
@@ -103,7 +103,7 @@ const ProjectsSection = () => {
     const fetchRepos = async () => {
       setLoading(true);
       // Replace this with actual GitHub API call:
-      // const response = await fetch('https://api.github.com/users/YOUR_USERNAME/repos?sort=updated&per_page=20');
+      // const response = await fetch('https://api.github.com/users/kichwee/repos?sort=updated&per_page=20');
       // const data = await response.json();
       
       setTimeout(() => {

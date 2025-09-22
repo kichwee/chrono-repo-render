@@ -28,7 +28,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <a href="#hero" className="text-2xl font-bold gradient-text">
-            Portfolio
+            Mark Maati
           </a>
 
           {/* Desktop Navigation */}
