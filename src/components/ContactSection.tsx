@@ -5,7 +5,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter } from 'lucide-react';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -40,25 +39,7 @@ const ContactSection = () => {
         toast({ title: "Message Sent!", description: "Thank you for your message. I'll get back to you soon!" });
         return;
       }
-
-      if (!isSupabaseConfigured()) {
-        throw new Error('Supabase is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
-      }
-
-      const { error } = await supabase
-        .from('contacts')
-        .insert([
-          {
-            name: values.name,
-            email: values.email,
-            subject: values.subject,
-            message: values.message,
-            created_at: new Date().toISOString(),
-          },
-        ]);
-
-      if (error) throw error;
-
+      // Simulated success (no backend)
       toast({
         title: "Message Sent!",
         description: "Thank you for your message. I'll get back to you soon!",
