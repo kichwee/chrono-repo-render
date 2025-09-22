@@ -5,30 +5,73 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const ContactSection = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+  const contactSchema = z.object({
+    name: z.string().min(2, 'Name must be at least 2 characters'),
+    email: z.string().email('Please enter a valid email address'),
+    subject: z.string().min(3, 'Subject must be at least 3 characters'),
+    message: z.string().min(10, 'Message must be at least 10 characters'),
+    // Honeypot: should remain empty
+    website: z.string().max(0).optional().or(z.literal('')),
+  });
+
+  type ContactForm = z.infer<typeof contactSchema>;
+
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactForm>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: { name: '', email: '', subject: '', message: '', website: '' },
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (values: ContactForm) => {
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Honeypot triggered
+      if (values.website && values.website.length > 0) {
+        // Pretend success to bots
+        reset();
+        toast({ title: "Message Sent!", description: "Thank you for your message. I'll get back to you soon!" });
+        return;
+      }
+
+      if (!isSupabaseConfigured()) {
+        throw new Error('Supabase is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
+      }
+
+      const { error } = await supabase
+        .from('contacts')
+        .insert([
+          {
+            name: values.name,
+            email: values.email,
+            subject: values.subject,
+            message: values.message,
+            created_at: new Date().toISOString(),
+          },
+        ]);
+
+      if (error) throw error;
+
       toast({
         title: "Message Sent!",
         description: "Thank you for your message. I'll get back to you soon!",
       });
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      reset();
+    } catch (err: any) {
+      toast({
+        title: "Submission failed",
+        description: err?.message ?? 'Please try again later.',
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -154,7 +197,12 @@ const ContactSection = () => {
           {/* Contact Form */}
           <div className="animate-scale-in">
             <Card className="card-futuristic">
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Honeypot field (hidden from users) */}
+                <div className="hidden">
+                  <label htmlFor="website">Website</label>
+                  <Input id="website" type="text" autoComplete="off" tabIndex={-1} {...register('website')} />
+                </div>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2 text-foreground">
@@ -162,14 +210,13 @@ const ContactSection = () => {
                     </label>
                     <Input
                       id="name"
-                      name="name"
                       type="text"
-                      value={formData.name}
-                      onChange={handleChange}
+                      {...register('name')}
                       required
                       className="bg-muted/50 border-border focus:border-primary"
                       placeholder="Your name"
                     />
+                    {errors.name && <p className="text-sm text-destructive mt-1">{errors.name.message}</p>}
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium mb-2 text-foreground">
@@ -177,14 +224,13 @@ const ContactSection = () => {
                     </label>
                     <Input
                       id="email"
-                      name="email"
                       type="email"
-                      value={formData.email}
-                      onChange={handleChange}
+                      {...register('email')}
                       required
                       className="bg-muted/50 border-border focus:border-primary"
                       placeholder="your.email@example.com"
                     />
+                    {errors.email && <p className="text-sm text-destructive mt-1">{errors.email.message}</p>}
                   </div>
                 </div>
 
@@ -194,14 +240,13 @@ const ContactSection = () => {
                   </label>
                   <Input
                     id="subject"
-                    name="subject"
                     type="text"
-                    value={formData.subject}
-                    onChange={handleChange}
+                    {...register('subject')}
                     required
                     className="bg-muted/50 border-border focus:border-primary"
                     placeholder="Project inquiry, collaboration, etc."
                   />
+                  {errors.subject && <p className="text-sm text-destructive mt-1">{errors.subject.message}</p>}
                 </div>
 
                 <div>
@@ -210,14 +255,13 @@ const ContactSection = () => {
                   </label>
                   <Textarea
                     id="message"
-                    name="message"
                     rows={5}
-                    value={formData.message}
-                    onChange={handleChange}
+                    {...register('message')}
                     required
                     className="bg-muted/50 border-border focus:border-primary resize-none"
                     placeholder="Tell me about your project or how we can work together..."
                   />
+                  {errors.message && <p className="text-sm text-destructive mt-1">{errors.message.message}</p>}
                 </div>
 
                 <Button 

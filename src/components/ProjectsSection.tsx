@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink, Github, Star, GitFork } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 
 interface Repository {
   id: number;
@@ -18,102 +19,39 @@ interface Repository {
 }
 
 const ProjectsSection = () => {
-  const [repos, setRepos] = useState<Repository[]>([]);
-  const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
 
-  // Mock data for demonstration - Replace with actual GitHub API call
-  const mockRepos: Repository[] = [
-    {
-      id: 1,
-      name: "ai-powered-dashboard",
-      description: "A comprehensive dashboard with AI-driven analytics and real-time data visualization",
-      html_url: "https://github.com/kichwee/ai-powered-dashboard",
-      homepage: "https://dashboard-demo.com",
-      stargazers_count: 124,
-      forks_count: 23,
-      language: "TypeScript",
-      topics: ["react", "typescript", "ai", "dashboard", "analytics"],
-      updated_at: "2024-01-15T10:30:00Z"
+  const { data: repos = [], isLoading, isError } = useQuery<Repository[]>({
+    queryKey: ['github-repos', 'kichwee'],
+    queryFn: async () => {
+      const response = await fetch(
+        'https://api.github.com/users/kichwee/repos?per_page=100&sort=updated',
+        {
+          headers: {
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch repositories');
+      }
+      const raw = await response.json();
+      return (raw as any[]).map((r) => ({
+        id: r.id,
+        name: r.name,
+        description: r.description ?? '',
+        html_url: r.html_url,
+        homepage: r.homepage ?? '',
+        stargazers_count: r.stargazers_count ?? 0,
+        forks_count: r.forks_count ?? 0,
+        language: r.language ?? 'Other',
+        topics: Array.isArray(r.topics) ? r.topics : [],
+        updated_at: r.updated_at,
+      }));
     },
-    {
-      id: 2,
-      name: "ml-data-pipeline",
-      description: "Scalable machine learning pipeline for processing large datasets with automated model training",
-      html_url: "https://github.com/kichwee/ml-data-pipeline",
-      homepage: "",
-      stargazers_count: 89,
-      forks_count: 15,
-      language: "Python",
-      topics: ["python", "machine-learning", "data-science", "pipeline", "tensorflow"],
-      updated_at: "2024-01-10T14:20:00Z"
-    },
-    {
-      id: 3,
-      name: "modern-ecommerce-app",
-      description: "Full-stack e-commerce application with payment integration and admin dashboard",
-      html_url: "https://github.com/kichwee/modern-ecommerce-app",
-      homepage: "https://ecommerce-demo.com",
-      stargazers_count: 67,
-      forks_count: 12,
-      language: "JavaScript",
-      topics: ["react", "nodejs", "ecommerce", "stripe", "mongodb"],
-      updated_at: "2024-01-08T09:15:00Z"
-    },
-    {
-      id: 4,
-      name: "blockchain-voting-system",
-      description: "Decentralized voting system built on blockchain with smart contracts",
-      html_url: "https://github.com/kichwee/blockchain-voting-system",
-      homepage: "",
-      stargazers_count: 156,
-      forks_count: 34,
-      language: "Solidity",
-      topics: ["blockchain", "solidity", "voting", "ethereum", "web3"],
-      updated_at: "2024-01-05T16:45:00Z"
-    },
-    {
-      id: 5,
-      name: "react-component-library",
-      description: "Modern React component library with TypeScript and Storybook documentation",
-      html_url: "https://github.com/kichwee/react-component-library",
-      homepage: "https://components-demo.com",
-      stargazers_count: 203,
-      forks_count: 41,
-      language: "TypeScript",
-      topics: ["react", "typescript", "components", "storybook", "ui-library"],
-      updated_at: "2024-01-03T11:30:00Z"
-    },
-    {
-      id: 6,
-      name: "api-microservices",
-      description: "Microservices architecture with Docker, Kubernetes, and message queuing",
-      html_url: "https://github.com/kichwee/api-microservices",
-      homepage: "",
-      stargazers_count: 78,
-      forks_count: 19,
-      language: "Go",
-      topics: ["golang", "microservices", "docker", "kubernetes", "api"],
-      updated_at: "2024-01-01T08:20:00Z"
-    }
-  ];
-
-  useEffect(() => {
-    // Simulate API call
-    const fetchRepos = async () => {
-      setLoading(true);
-      // Replace this with actual GitHub API call:
-      // const response = await fetch('https://api.github.com/users/kichwee/repos?sort=updated&per_page=20');
-      // const data = await response.json();
-      
-      setTimeout(() => {
-        setRepos(mockRepos);
-        setLoading(false);
-      }, 1000);
-    };
-
-    fetchRepos();
-  }, []);
+    staleTime: 1000 * 60 * 5,
+  });
 
   const displayedRepos = showAll ? repos : repos.slice(0, 6);
 
@@ -128,7 +66,7 @@ const ProjectsSection = () => {
     return colors[language] || 'text-gray-400';
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <section id="projects" className="section-container">
         <div className="max-w-6xl mx-auto">
@@ -150,6 +88,22 @@ const ProjectsSection = () => {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (isError) {
+    return (
+      <section id="projects" className="section-container">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-4xl md:text-6xl font-bold mb-6">
+            My <span className="gradient-text">Projects</span>
+          </h2>
+          <p className="text-muted-foreground mb-6">Unable to load repositories from GitHub right now.</p>
+          <Button variant="outline" onClick={() => window.location.reload()} className="btn-outline-hero">
+            Retry
+          </Button>
         </div>
       </section>
     );

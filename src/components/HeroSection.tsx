@@ -36,11 +36,11 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-            <Button className="btn-hero group">
+            <Button className="btn-hero group" onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}>
               <span>View My Work</span>
               <ArrowDown className="ml-2 h-5 w-5 group-hover:translate-y-1 transition-transform" />
             </Button>
-            <Button variant="outline" className="btn-outline-hero">
+            <Button variant="outline" className="btn-outline-hero" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
               Let's Connect
             </Button>
           </div>

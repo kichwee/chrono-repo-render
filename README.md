@@ -64,6 +64,32 @@ This project is built with:
 
 Simply open [Lovable](https://lovable.dev/projects/fb9fa05e-28b3-48b4-a0ed-eff55bb45c9b) and click on Share -> Publish.
 
+## Supabase setup
+
+To enable Supabase features (e.g., contact form submissions), create a `.env` file in the project root with:
+
+```
+VITE_SUPABASE_URL=your-project-url
+VITE_SUPABASE_ANON_KEY=your-anon-key
+```
+
+Create a `contacts` table in Supabase:
+
+```sql
+create table if not exists public.contacts (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  email text not null,
+  subject text not null,
+  message text not null,
+  created_at timestamptz not null default now()
+);
+
+alter table public.contacts enable row level security;
+create policy "allow insert for anon"
+  on public.contacts for insert to anon with check (true);
+```
+
 ## Can I connect a custom domain to my Lovable project?
 
 Yes, you can!

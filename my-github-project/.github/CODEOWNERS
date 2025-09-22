@@ -1,0 +1,8 @@
+# This is a CODEOWNERS file
+# Specify the users or teams responsible for code in the repository
+
+# Example: Assigning ownership to a specific user
+* @username
+
+# Example: Assigning ownership to a team
+# * @org/team-name
